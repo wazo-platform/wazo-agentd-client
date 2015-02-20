@@ -97,20 +97,6 @@ class TestRequestFactory(unittest.TestCase):
         self.extension = '1222'
         self.context = 'alice'
 
-    def test_status_by_id(self):
-        expected_url = '{}/by-id/2'.format(self.base_url)
-
-        req = self.req_factory.status_by_id(self.agent_id)
-
-        self._assert_get_request(req, expected_url)
-
-    def test_status_by_number(self):
-        expected_url = '{}/by-number/1002'.format(self.base_url)
-
-        req = self.req_factory.status_by_number(self.agent_number)
-
-        self._assert_get_request(req, expected_url)
-
     def test_login_by_id(self):
         expected_url = '{}/by-id/2/login'.format(self.base_url)
         expected_body = {'extension': self.extension, 'context': self.context}
@@ -140,6 +126,20 @@ class TestRequestFactory(unittest.TestCase):
         req = self.req_factory.logoff_by_number(self.agent_number)
 
         self._assert_post_request(req, expected_url)
+
+    def test_status_by_id(self):
+        expected_url = '{}/by-id/2'.format(self.base_url)
+
+        req = self.req_factory.status_by_id(self.agent_id)
+
+        self._assert_get_request(req, expected_url)
+
+    def test_status_by_number(self):
+        expected_url = '{}/by-number/1002'.format(self.base_url)
+
+        req = self.req_factory.status_by_number(self.agent_number)
+
+        self._assert_get_request(req, expected_url)
 
     def _assert_get_request(self, req, expected_url):
         prep_req = req.prepare()
