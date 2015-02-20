@@ -98,7 +98,7 @@ class _RequestFactory(object):
         return self._add_to_queue('by-id', agent_id, queue_id)
 
     def _add_to_queue(self, by, value, queue_id):
-        url = '{}/{}/{}/add'.format(self.base_url, by, value)
+        url = '{}/{}/{}/add'.format(self._base_url, by, value)
         obj = {'queue_id': queue_id}
         return self._new_post_request(url, obj)
 
@@ -106,7 +106,7 @@ class _RequestFactory(object):
         return self._remove_from_queue('by-id', agent_id, queue_id)
 
     def _remove_from_queue(self, by, value, queue_id):
-        url = '{}/{}/{}/remove'.format(self.base_url, by, value)
+        url = '{}/{}/{}/remove'.format(self._base_url, by, value)
         obj = {'queue_id': queue_id}
         return self._new_post_request(url, obj)
 
@@ -156,11 +156,11 @@ class _RequestFactory(object):
         return self._new_get_request(url)
 
     def logoff_all(self):
-        url = '{}/logoff'.format(self.base_url)
+        url = '{}/logoff'.format(self._base_url)
         return self._new_post_request(url)
 
     def relog_all(self):
-        url = '{}/relog'.format(self.base_url)
+        url = '{}/relog'.format(self._base_url)
         return self._new_post_request(url)
 
     def status_all(self):
@@ -201,10 +201,11 @@ class _ResponseProcessor(object):
         if status_code_class == 4 or status_code_class == 5:
             try:
                 obj = resp.json()
+                obj_error = obj['error']
             except Exception:
                 resp.raise_for_status()
             else:
-                raise AgentClientError(obj['error'])
+                raise AgentClientError(obj_error)
 
         if expected_status_code:
             if expected_status_code != resp.status_code:
