@@ -11,5 +11,5 @@ from xivo_agentd_client import Client
 
 c = Client('agentd.example.com')
 
-agent_status = c.agents.get_agent_status(4)
+agent_status = c.agents.get_agent_status_by_number('1002')
 ```
