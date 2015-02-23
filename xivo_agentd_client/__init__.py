@@ -17,7 +17,12 @@
 
 from xivo_lib_rest_client import make_client
 
+DEFAULT_HOST = 'localhost'
+DEFAULT_PORT = 9493
+DEFAULT_VERSION = '1.0'
+
 Client = make_client('agentd_client.commands',
-                     port=9493,
-                     version='1.0',
+                     host=DEFAULT_HOST,
+                     port=DEFAULT_PORT,
+                     version=DEFAULT_VERSION,
                      https=False)
