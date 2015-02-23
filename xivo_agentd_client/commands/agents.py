@@ -19,7 +19,7 @@ import json
 import requests
 
 from xivo_lib_rest_client import BaseHTTPCommand
-from xivo_agentd_client.error import AgentClientError
+from xivo_agentd_client.error import AgentdClientError
 
 
 class AgentsCommand(BaseHTTPCommand):
@@ -205,7 +205,7 @@ class _ResponseProcessor(object):
             except Exception:
                 resp.raise_for_status()
             else:
-                raise AgentClientError(obj_error)
+                raise AgentdClientError(obj_error)
 
         if expected_status_code:
             if expected_status_code != resp.status_code:

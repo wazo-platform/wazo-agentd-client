@@ -25,8 +25,8 @@ NOT_IN_QUEUE = 'agent not in queue'
 NO_SUCH_EXTEN = 'no such extension and context'
 
 
-class AgentClientError(Exception):
+class AgentdClientError(Exception):
 
     def __init__(self, error):
-        super(AgentClientError, self).__init__(error)
+        super(AgentdClientError, self).__init__(error)
         self.error = error

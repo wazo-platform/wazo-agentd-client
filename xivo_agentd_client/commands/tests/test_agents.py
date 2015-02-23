@@ -21,7 +21,7 @@ from hamcrest import assert_that, equal_to
 from mock import Mock, sentinel
 from requests.exceptions import HTTPError
 from xivo_lib_rest_client.tests.command import HTTPCommandTestCase
-from xivo_agentd_client.error import AgentClientError
+from xivo_agentd_client.error import AgentdClientError
 from xivo_agentd_client.commands.agents import AgentsCommand, _RequestFactory, _ResponseProcessor
 
 
@@ -230,7 +230,7 @@ class TestResponseProcessor(unittest.TestCase):
         try:
             self.resp_processor.generic(resp)
             self.fail()
-        except AgentClientError as e:
+        except AgentdClientError as e:
             assert_that(e.error, equal_to(v['error']))
 
     def test_generic_on_500_no_json_error(self):
