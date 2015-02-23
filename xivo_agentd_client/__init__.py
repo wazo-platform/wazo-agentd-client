@@ -15,14 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-from xivo_lib_rest_client import make_client
+from xivo_lib_rest_client import new_client_factory
 
-DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 9493
-DEFAULT_VERSION = '1.0'
 
-Client = make_client('agentd_client.commands',
-                     host=DEFAULT_HOST,
-                     port=DEFAULT_PORT,
-                     version=DEFAULT_VERSION,
-                     https=False)
+Client = new_client_factory('agentd_client.commands', DEFAULT_PORT, '1.0')
