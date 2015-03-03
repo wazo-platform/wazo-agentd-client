@@ -20,7 +20,7 @@ from setuptools import setup
 from setuptools import find_packages
 
 setup(
-    name='xivo_agentd_client',
+    name='xivo-agentd-client',
     version='0.1',
 
     description='a simple client library for the xivo-agentd HTTP interface',
