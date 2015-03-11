@@ -84,7 +84,7 @@ class AgentsCommand(BaseHTTPCommand):
         return self._execute(req, self._resp_processor.status_all)
 
     def _execute(self, req, processor_fun):
-        resp = self.session.send(self.session.prepare_request(req))
+        resp = self.session.send(self.session.prepare_request(req), timeout=self.timeout)
         return processor_fun(resp)
 
 

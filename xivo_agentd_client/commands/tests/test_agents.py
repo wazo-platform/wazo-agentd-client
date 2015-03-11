@@ -84,7 +84,7 @@ class TestAgents(HTTPCommandTestCase):
 
     def _assert_session_called(self):
         self.session.prepare_request.assert_called_once_with(sentinel.req)
-        self.session.send.assert_called_once_with(sentinel.prep_req)
+        self.session.send.assert_called_once_with(sentinel.prep_req, timeout=sentinel.timeout)
 
 
 class TestRequestFactory(unittest.TestCase):
