@@ -20,14 +20,14 @@ import unittest
 from hamcrest import assert_that, equal_to
 from mock import Mock, sentinel
 from requests.exceptions import HTTPError
-from xivo_lib_rest_client.tests.command import HTTPCommandTestCase
+from xivo_lib_rest_client.tests.command import RESTCommandTestCase
 from xivo_agentd_client.error import AgentdClientError
 from xivo_agentd_client.commands.agents import AgentsCommand, _RequestFactory, _ResponseProcessor
 
 
-new_response = HTTPCommandTestCase.new_response
+new_response = RESTCommandTestCase.new_response
 
-class TestAgents(HTTPCommandTestCase):
+class TestAgents(RESTCommandTestCase):
 
     Command = AgentsCommand
 
