@@ -18,11 +18,11 @@
 import json
 import requests
 
-from xivo_lib_rest_client import BaseHTTPCommand
+from xivo_lib_rest_client import RESTCommand
 from xivo_agentd_client.error import AgentdClientError
 
 
-class AgentsCommand(BaseHTTPCommand):
+class AgentsCommand(RESTCommand):
 
     resource = 'agents'
 
