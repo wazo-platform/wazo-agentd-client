@@ -223,6 +223,7 @@ class _AgentStatus(object):
         self.logged = False
         self.extension = None
         self.context = None
+        self.state_interface = None
 
     @classmethod
     def new_from_dict(cls, d):
@@ -230,4 +231,6 @@ class _AgentStatus(object):
         obj.logged = d['logged']
         obj.extension = d['extension']
         obj.context = d['context']
+        # handle case where state_interface is missing (XiVO 15.14 or earlier)
+        obj.state_interface = d.get('state_interface')
         return obj
