@@ -15,4 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-from xivo_agentd_client.client import AgentdClient as Client
+from xivo_lib_rest_client.client import BaseClient
+
+
+class AgentdClient(BaseClient):
+
+    namespace = 'agentd_client.commands'
+
+    def __init__(self, host, port=9493, version='1.0', https=False, **kwargs):
+        super(AgentdClient, self).__init__(host=host, port=port, version=version, https=https, **kwargs)
