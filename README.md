@@ -13,3 +13,13 @@ c = Client('agentd.example.com')
 
 agent_status = c.agents.get_agent_status_by_number('1002')
 ```
+
+
+Running unit tests
+------------------
+
+```
+apt-get install libpq-dev python-dev libffi-dev libyaml-dev
+pip install tox
+tox --recreate -e py27
+```
