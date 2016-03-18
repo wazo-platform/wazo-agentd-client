@@ -27,6 +27,7 @@ from xivo_agentd_client.commands.agents import AgentsCommand, _RequestFactory, _
 
 new_response = RESTCommandTestCase.new_response
 
+
 class TestAgents(RESTCommandTestCase):
 
     Command = AgentsCommand
