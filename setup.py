@@ -28,7 +28,7 @@ setup(
     author='Avencall',
     author_email='dev@avencall.com',
 
-    url='https://github.com/xivo-pbx/xivo-agentd-client',
+    url='https://github.com/wazo-pbx/xivo-agentd-client',
 
     packages=find_packages(),
 
