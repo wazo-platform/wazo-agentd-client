@@ -1,6 +1,6 @@
 # xivo-agentd-client
 
-[![Build Status](https://travis-ci.org/xivo-pbx/xivo-agentd-client.svg?branch=master)](https://travis-ci.org/xivo-pbx/xivo-agentd-client)
+[![Build Status](https://travis-ci.org/wazo-pbx/xivo-agentd-client.svg?branch=master)](https://travis-ci.org/wazo-pbx/xivo-agentd-client)
 
 A python library to access the REST API of xivo-agentd.
 
