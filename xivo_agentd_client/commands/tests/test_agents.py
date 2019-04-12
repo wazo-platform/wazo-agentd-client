@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2015 Avencall
+# Copyright 2015-2019 The Wazo Authors  (see the AUTHORS file)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@ from xivo_agentd_client.commands.agents import AgentsCommand, _RequestFactory, _
 
 new_response = RESTCommandTestCase.new_response
 
+FAKE_TENANT = 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'
+
 
 class TestAgents(RESTCommandTestCase):
 
@@ -46,18 +48,18 @@ class TestAgents(RESTCommandTestCase):
     def test_login_agent(self):
         self.req_factory.login_by_id.return_value = sentinel.req
 
-        self.command.login_agent(sentinel.agent_id, sentinel.extension, sentinel.context)
+        self.command.login_agent(sentinel.agent_id, sentinel.extension, sentinel.context, tenant_uuid=FAKE_TENANT)
 
-        self.req_factory.login_by_id.assert_called_once_with(sentinel.agent_id, sentinel.extension, sentinel.context)
+        self.req_factory.login_by_id.assert_called_once_with(sentinel.agent_id, sentinel.extension, sentinel.context, tenant_uuid=FAKE_TENANT)
         self.resp_processor.generic.assert_called_once_with(sentinel.resp)
         self._assert_session_called()
 
     def test_login_agent_by_number(self):
         self.req_factory.login_by_number.return_value = sentinel.req
 
-        self.command.login_agent_by_number(sentinel.agent_number, sentinel.extension, sentinel.context)
+        self.command.login_agent_by_number(sentinel.agent_number, sentinel.extension, sentinel.context, tenant_uuid=FAKE_TENANT)
 
-        self.req_factory.login_by_number.assert_called_once_with(sentinel.agent_number, sentinel.extension, sentinel.context)
+        self.req_factory.login_by_number.assert_called_once_with(sentinel.agent_number, sentinel.extension, sentinel.context, tenant_uuid=FAKE_TENANT)
         self.resp_processor.generic.assert_called_once_with(sentinel.resp)
         self._assert_session_called()
 
@@ -65,21 +67,32 @@ class TestAgents(RESTCommandTestCase):
         self.req_factory.status_by_id.return_value = sentinel.req
         self.resp_processor.status.return_value = sentinel.res
 
-        res = self.command.get_agent_status(sentinel.agent_id)
+        res = self.command.get_agent_status(sentinel.agent_id, tenant_uuid=FAKE_TENANT)
 
         assert_that(res, equal_to(sentinel.res))
-        self.req_factory.status_by_id.assert_called_once_with(sentinel.agent_id)
+        self.req_factory.status_by_id.assert_called_once_with(sentinel.agent_id, tenant_uuid=FAKE_TENANT)
         self.resp_processor.status.assert_called_once_with(sentinel.resp)
+        self._assert_session_called()
+
+    def test_get_agent_statuses(self):
+        self.req_factory.status_all.return_value = sentinel.req
+        self.resp_processor.status_all.return_value = sentinel.res
+
+        res = self.command.get_agent_statuses(tenant_uuid=FAKE_TENANT, recurse=True)
+
+        assert_that(res, equal_to(sentinel.res))
+        self.req_factory.status_all.assert_called_once_with(tenant_uuid=FAKE_TENANT, recurse=True)
+        self.resp_processor.status_all.assert_called_once_with(sentinel.resp)
         self._assert_session_called()
 
     def test_get_agent_status_by_number(self):
         self.req_factory.status_by_number.return_value = sentinel.req
         self.resp_processor.status.return_value = sentinel.res
 
-        res = self.command.get_agent_status_by_number(sentinel.agent_number)
+        res = self.command.get_agent_status_by_number(sentinel.agent_number, tenant_uuid=FAKE_TENANT)
 
         assert_that(res, equal_to(sentinel.res))
-        self.req_factory.status_by_number.assert_called_once_with(sentinel.agent_number)
+        self.req_factory.status_by_number.assert_called_once_with(sentinel.agent_number, tenant_uuid=FAKE_TENANT)
         self.resp_processor.status.assert_called_once_with(sentinel.resp)
         self._assert_session_called()
 
