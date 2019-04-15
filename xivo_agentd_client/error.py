@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2015 Avencall
+# Copyright 2015-2019 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 NO_SUCH_AGENT = 'no such agent'
@@ -11,6 +11,8 @@ ALREADY_IN_USE = 'extension and context already in use'
 ALREADY_IN_QUEUE = 'agent already in queue'
 NOT_IN_QUEUE = 'agent not in queue'
 NO_SUCH_EXTEN = 'no such extension and context'
+CONTEXT_DIFFERENT_TENANT = 'agent and context are not in the same tenant'
+QUEUE_DIFFERENT_TENANT = 'agent and queue are not in the same tenant'
 
 
 class AgentdClientError(Exception):
