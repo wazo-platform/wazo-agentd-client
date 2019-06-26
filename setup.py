@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Copyright (C) 2015 Avencall
+# Copyright 2015-2019 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from setuptools import setup
 from setuptools import find_packages
 
 setup(
-    name='xivo-agentd-client',
+    name='wazo-agentd-client',
     version='0.1.1',
 
-    description='a simple client library for the xivo-agentd HTTP interface',
+    description='a simple client library for the wazo-agentd HTTP interface',
 
     author='Wazo Authors',
     author_email='dev.wazo@gmail.com',
@@ -22,7 +22,7 @@ setup(
 
     entry_points={
         'agentd_client.commands': [
-            'agents = xivo_agentd_client.commands.agents:AgentsCommand',
+            'agents = wazo_agentd_client.commands.agents:AgentsCommand',
         ],
     }
 )
