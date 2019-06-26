@@ -1,5 +1,5 @@
-xivo-agentd-client (0.1) xivo-dev; urgency=low
+wazo-agentd-client (19.10~20190826) wazo-dev-stretch; urgency=low
 
   * Initial release.
 
- -- Pascal Cadotte Michaud <pcadottemichaud@avencall.com>  Fri, 14 Nov 2014 14:41:00 -0500
+ -- Wazo Maintainers <dev+pkg@wazo.community>  Wed, 26 Jun 2019 09:13:28 -0400
