@@ -12,6 +12,7 @@ NOT_IN_QUEUE = 'agent not in queue'
 NO_SUCH_EXTEN = 'no such extension and context'
 CONTEXT_DIFFERENT_TENANT = 'agent and context are not in the same tenant'
 QUEUE_DIFFERENT_TENANT = 'agent and queue are not in the same tenant'
+UNAUTHORIZED = 'invalid token or unauthorized'
 
 
 class AgentdClientError(Exception):
