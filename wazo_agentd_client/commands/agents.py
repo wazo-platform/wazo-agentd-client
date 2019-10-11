@@ -5,7 +5,7 @@
 import json
 import requests
 
-from xivo_lib_rest_client import RESTCommand
+from wazo_lib_rest_client import RESTCommand
 from wazo_agentd_client.error import AgentdClientError
 
 
