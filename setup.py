@@ -21,7 +21,7 @@ setup(
     packages=find_packages(),
 
     entry_points={
-        'agentd_client.commands': [
+        'wazo_agentd_client.commands': [
             'agents = wazo_agentd_client.commands.agents:AgentsCommand',
         ],
     }
