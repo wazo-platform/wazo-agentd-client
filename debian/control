@@ -9,7 +9,7 @@ X-Python-Version: >= 2.7
 Package: wazo-agentd-client
 Architecture: all
 Section: python
-Depends: ${python:Depends}, ${misc:Depends}, xivo-lib-rest-client, python-requests
+Depends: ${python:Depends}, ${misc:Depends}, wazo-lib-rest-client, python-requests
 Description: wazo-agentd client library in python
  Wazo is a system based on a powerful IPBX, to bring an easy to
  install solution for telephony and related services.

@@ -7,7 +7,7 @@ import unittest
 from hamcrest import assert_that, equal_to
 from mock import Mock, sentinel
 from requests.exceptions import HTTPError
-from xivo_lib_rest_client.tests.command import RESTCommandTestCase
+from wazo_lib_rest_client.tests.command import RESTCommandTestCase
 from wazo_agentd_client.error import AgentdClientError
 from wazo_agentd_client.commands.agents import AgentsCommand, _RequestFactory, _ResponseProcessor
 
