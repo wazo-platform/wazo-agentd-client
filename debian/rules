@@ -1,5 +1,10 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
+export PYBUILD_NAME=wazo_agentd_client
+export PYBUILD_DESTDIR_python2=debian/wazo-agentd-client/
+export PYBUILD_DESTDIR_python3=debian/wazo-agentd-client-python3/
+export PYBUILD_DISABLE=test
+
 %:
-	dh $@ --with python2
+	dh $@ --with python2,python3 --buildsystem=pybuild
