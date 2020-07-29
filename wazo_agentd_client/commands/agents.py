@@ -54,6 +54,12 @@ class AgentsCommand(RESTCommand):
         req = self._req_factory.logoff_by_number(agent_number, tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
+    def logoff_user_agent(self, tenant_uuid=None):
+        tenant_uuid = tenant_uuid or self._client.tenant()
+        user_req_factory = _RequestFactory(self._client.url())
+        req = user_req_factory.logoff_user_agent(tenant_uuid=tenant_uuid)
+        self._execute(req, self._resp_processor.generic)
+
     def logoff_all_agents(self, tenant_uuid=None, recurse=False):
         tenant_uuid = tenant_uuid or self._client.tenant()
         req = self._req_factory.logoff_all(tenant_uuid=tenant_uuid, recurse=recurse)
@@ -149,6 +155,13 @@ class _RequestFactory(object):
 
     def _logoff(self, by, value, tenant_uuid=None):
         url = '{}/{}/{}/logoff'.format(self._base_url, by, value)
+        additional_headers = {}
+        if tenant_uuid:
+            additional_headers['Wazo-Tenant'] = tenant_uuid
+        return self._new_post_request(url, additional_headers=additional_headers)
+
+    def logoff_user_agent(self, tenant_uuid=None):
+        url = '{}/users/me/agents/logoff'.format(self._base_url)
         additional_headers = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
