@@ -38,6 +38,12 @@ class AgentsCommand(RESTCommand):
         req = self._req_factory.login_by_number(agent_number, extension, context, tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
+    def login_user_agent(self, line_id, tenant_uuid=None):
+        tenant_uuid = tenant_uuid or self._client.tenant()
+        user_req_factory = _RequestFactory(self._client.url())
+        req = user_req_factory.login_user_agent(line_id, tenant_uuid=tenant_uuid)
+        self._execute(req, self._resp_processor.generic)
+
     def logoff_agent(self, agent_id, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant()
         req = self._req_factory.logoff_by_id(agent_id, tenant_uuid=tenant_uuid)
@@ -122,6 +128,14 @@ class _RequestFactory(object):
     def _login(self, by, value, extension, context, tenant_uuid=None):
         url = '{}/{}/{}/login'.format(self._base_url, by, value)
         obj = {'extension': extension, 'context': context}
+        additional_headers = {}
+        if tenant_uuid:
+            additional_headers['Wazo-Tenant'] = tenant_uuid
+        return self._new_post_request(url, obj, additional_headers=additional_headers)
+
+    def login_user_agent(self, line_id, tenant_uuid=None):
+        url = '{}/users/me/agents/login'.format(self._base_url)
+        obj = {'line_id': line_id}
         additional_headers = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
