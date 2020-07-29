@@ -26,6 +26,7 @@ class TestRequestFactory(unittest.TestCase):
         self.extension = '1222'
         self.context = 'alice'
         self.queue_id = 3
+        self.line_id = 4
 
     def test_add_to_queue_by_id(self):
         expected_url = '{}/by-id/2/add'.format(self.base_url)
@@ -59,6 +60,14 @@ class TestRequestFactory(unittest.TestCase):
 
         self._assert_post_request(req, expected_url, expected_body)
 
+    def test_login_user_agent(self):
+        expected_url = '{}/users/me/agents/login'.format(self.base_url)
+        expected_body = {'line_id': self.line_id}
+
+        req = self.req_factory.login_user_agent(self.line_id)
+
+        self._assert_post_request(req, expected_url, expected_body)
+
     def test_logoff_by_id(self):
         expected_url = '{}/by-id/2/logoff'.format(self.base_url)
 
@@ -72,6 +81,13 @@ class TestRequestFactory(unittest.TestCase):
         req = self.req_factory.logoff_by_number(self.agent_number)
 
         self._assert_post_request(req, expected_url)
+
+    def test_logoff_user_agent(self):
+        expected_url = '{}/users/me/agents/logoff'.format(self.base_url)
+
+        req = self.req_factory.logoff_user_agent()
+
+        self._assert_post_request(req, expected_url, expected_body=None)
 
     def test_pause_by_number(self):
         expected_url = '{}/by-number/1002/pause'.format(self.base_url)
