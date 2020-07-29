@@ -229,7 +229,6 @@ class _RequestFactory(object):
             headers.update(additional_headers)
         if obj is None:
             data = None
-            headers = self._headers
         else:
             data = json.dumps(obj)
             headers['Content-Type'] = 'application/json'
