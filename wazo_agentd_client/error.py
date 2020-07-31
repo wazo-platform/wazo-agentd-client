@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 NO_SUCH_AGENT = 'no such agent'
+NO_SUCH_LINE = 'no such line'
 NO_SUCH_QUEUE = 'no such queue'
 ALREADY_LOGGED = 'already logged'
 NOT_LOGGED = 'not logged in'

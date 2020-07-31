@@ -11,7 +11,34 @@ from wazo_agentd_client import Client
 
 c = Client('agentd.example.com')
 
-agent_status = c.agents.get_agent_status_by_number('1002')
+c.agents.add_agent_to_queue(agent_id=12, queue_id=13)
+c.agents.remove_agent_from_queue(agent_id=12, queue_id=13)
+
+c.agents.login_agent(agent_id=12, extension='5678', context='internal')
+c.agents.logoff_agent(agent_id=12)
+
+c.agents.login_agent_by_number(agent_number='1234', extension='5678', context='internal')
+c.agents.logoff_agent_by_number(agent_number='1234')
+
+c.agents.logoff_all_agents()
+c.agents.relog_all_agents()
+
+c.agents.pause_agent_by_number(agent_number='1234')
+c.agents.unpause_agent_by_number(agent_number='1234')
+
+status = c.agents.get_agent_status(agent_id=12)
+status = c.agents.get_agent_status_by_number(agent_number='1234')
+status = c.agents.get_agent_statuses()
+
+print(status.id)
+print(status.number)
+print(status.origin_uuid)
+print(status.logged)
+print(status.extension)
+print(status.context)
+print(status.state_interface)
+print(status.paused)
+print(status.paused_reason)
 ```
 
 

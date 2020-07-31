@@ -5,87 +5,15 @@
 import json
 import unittest
 from hamcrest import assert_that, equal_to
-from mock import Mock, sentinel
 from requests.exceptions import HTTPError
 from wazo_lib_rest_client.tests.command import RESTCommandTestCase
 from wazo_agentd_client.error import AgentdClientError
-from wazo_agentd_client.commands.agents import AgentsCommand, _RequestFactory, _ResponseProcessor
+from wazo_agentd_client.commands.agents import _RequestFactory, _ResponseProcessor
 
 
 new_response = RESTCommandTestCase.new_response
 
 FAKE_TENANT = 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'
-
-
-class TestAgents(RESTCommandTestCase):
-
-    Command = AgentsCommand
-
-    # XXX these tests are so mocked that I don't know if there's any real value
-
-    def setUp(self):
-        super(TestAgents, self).setUp()
-        self.req_factory = Mock(_RequestFactory)
-        self.resp_processor = Mock(_ResponseProcessor)
-        self.command._req_factory = self.req_factory
-        self.command._resp_processor = self.resp_processor
-        self.session.prepare_request.return_value = sentinel.prep_req
-        self.session.send.return_value = sentinel.resp
-
-    def test_login_agent(self):
-        self.req_factory.login_by_id.return_value = sentinel.req
-
-        self.command.login_agent(sentinel.agent_id, sentinel.extension, sentinel.context, tenant_uuid=FAKE_TENANT)
-
-        self.req_factory.login_by_id.assert_called_once_with(sentinel.agent_id, sentinel.extension, sentinel.context, tenant_uuid=FAKE_TENANT)
-        self.resp_processor.generic.assert_called_once_with(sentinel.resp)
-        self._assert_session_called()
-
-    def test_login_agent_by_number(self):
-        self.req_factory.login_by_number.return_value = sentinel.req
-
-        self.command.login_agent_by_number(sentinel.agent_number, sentinel.extension, sentinel.context, tenant_uuid=FAKE_TENANT)
-
-        self.req_factory.login_by_number.assert_called_once_with(sentinel.agent_number, sentinel.extension, sentinel.context, tenant_uuid=FAKE_TENANT)
-        self.resp_processor.generic.assert_called_once_with(sentinel.resp)
-        self._assert_session_called()
-
-    def test_get_agent_status(self):
-        self.req_factory.status_by_id.return_value = sentinel.req
-        self.resp_processor.status.return_value = sentinel.res
-
-        res = self.command.get_agent_status(sentinel.agent_id, tenant_uuid=FAKE_TENANT)
-
-        assert_that(res, equal_to(sentinel.res))
-        self.req_factory.status_by_id.assert_called_once_with(sentinel.agent_id, tenant_uuid=FAKE_TENANT)
-        self.resp_processor.status.assert_called_once_with(sentinel.resp)
-        self._assert_session_called()
-
-    def test_get_agent_statuses(self):
-        self.req_factory.status_all.return_value = sentinel.req
-        self.resp_processor.status_all.return_value = sentinel.res
-
-        res = self.command.get_agent_statuses(tenant_uuid=FAKE_TENANT, recurse=True)
-
-        assert_that(res, equal_to(sentinel.res))
-        self.req_factory.status_all.assert_called_once_with(tenant_uuid=FAKE_TENANT, recurse=True)
-        self.resp_processor.status_all.assert_called_once_with(sentinel.resp)
-        self._assert_session_called()
-
-    def test_get_agent_status_by_number(self):
-        self.req_factory.status_by_number.return_value = sentinel.req
-        self.resp_processor.status.return_value = sentinel.res
-
-        res = self.command.get_agent_status_by_number(sentinel.agent_number, tenant_uuid=FAKE_TENANT)
-
-        assert_that(res, equal_to(sentinel.res))
-        self.req_factory.status_by_number.assert_called_once_with(sentinel.agent_number, tenant_uuid=FAKE_TENANT)
-        self.resp_processor.status.assert_called_once_with(sentinel.resp)
-        self._assert_session_called()
-
-    def _assert_session_called(self):
-        self.session.prepare_request.assert_called_once_with(sentinel.req)
-        self.session.send.assert_called_once_with(sentinel.prep_req, timeout=sentinel.timeout)
 
 
 class TestRequestFactory(unittest.TestCase):
@@ -98,6 +26,7 @@ class TestRequestFactory(unittest.TestCase):
         self.extension = '1222'
         self.context = 'alice'
         self.queue_id = 3
+        self.line_id = 4
 
     def test_add_to_queue_by_id(self):
         expected_url = '{}/by-id/2/add'.format(self.base_url)
@@ -131,6 +60,14 @@ class TestRequestFactory(unittest.TestCase):
 
         self._assert_post_request(req, expected_url, expected_body)
 
+    def test_login_user_agent(self):
+        expected_url = '{}/users/me/agents/login'.format(self.base_url)
+        expected_body = {'line_id': self.line_id}
+
+        req = self.req_factory.login_user_agent(self.line_id)
+
+        self._assert_post_request(req, expected_url, expected_body)
+
     def test_logoff_by_id(self):
         expected_url = '{}/by-id/2/logoff'.format(self.base_url)
 
@@ -144,6 +81,13 @@ class TestRequestFactory(unittest.TestCase):
         req = self.req_factory.logoff_by_number(self.agent_number)
 
         self._assert_post_request(req, expected_url)
+
+    def test_logoff_user_agent(self):
+        expected_url = '{}/users/me/agents/logoff'.format(self.base_url)
+
+        req = self.req_factory.logoff_user_agent()
+
+        self._assert_post_request(req, expected_url, expected_body=None)
 
     def test_pause_by_number(self):
         expected_url = '{}/by-number/1002/pause'.format(self.base_url)
