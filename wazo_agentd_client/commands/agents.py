@@ -75,8 +75,20 @@ class AgentsCommand(RESTCommand):
         req = self._req_factory.pause_by_number(agent_number, tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
+    def pause_user_agent(self, tenant_uuid=None):
+        tenant_uuid = tenant_uuid or self._client.tenant()
+        user_req_factory = _RequestFactory(self._client.url())
+        req = user_req_factory.pause_user_agent(tenant_uuid=tenant_uuid)
+        self._execute(req, self._resp_processor.generic)
+
     def unpause_agent_by_number(self, agent_number, tenant_uuid=None):
         req = self._req_factory.unpause_by_number(agent_number, tenant_uuid=tenant_uuid)
+        self._execute(req, self._resp_processor.generic)
+
+    def resume_user_agent(self, tenant_uuid=None):
+        tenant_uuid = tenant_uuid or self._client.tenant()
+        user_req_factory = _RequestFactory(self._client.url())
+        req = user_req_factory.resume_user_agent(tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
     def get_agent_status(self, agent_id, tenant_uuid=None):
@@ -177,11 +189,25 @@ class _RequestFactory(object):
             additional_headers['Wazo-Tenant'] = tenant_uuid
         return self._new_post_request(url, additional_headers=additional_headers)
 
+    def pause_user_agent(self, tenant_uuid=None):
+        url = '{}/users/me/agents/pause'.format(self._base_url)
+        additional_headers = {}
+        if tenant_uuid:
+            additional_headers['Wazo-Tenant'] = tenant_uuid
+        return self._new_post_request(url, additional_headers=additional_headers)
+
     def unpause_by_number(self, agent_number, tenant_uuid=None):
         return self._unpause('by-number', agent_number, tenant_uuid=tenant_uuid)
 
     def _unpause(self, by, value, tenant_uuid=None):
         url = '{}/{}/{}/unpause'.format(self._base_url, by, value)
+        additional_headers = {}
+        if tenant_uuid:
+            additional_headers['Wazo-Tenant'] = tenant_uuid
+        return self._new_post_request(url, additional_headers=additional_headers)
+
+    def resume_user_agent(self, tenant_uuid=None):
+        url = '{}/users/me/agents/resume'.format(self._base_url)
         additional_headers = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
@@ -288,6 +314,7 @@ class _AgentStatus(object):
         self.number = agent_number
         self.origin_uuid = origin_uuid
         self.logged = False
+        self.paused = None
         self.extension = None
         self.context = None
         self.state_interface = None
@@ -296,6 +323,7 @@ class _AgentStatus(object):
     def new_from_dict(cls, d):
         obj = cls(d['id'], d['number'], d['origin_uuid'])
         obj.logged = d['logged']
+        obj.paused = d['paused']
         obj.extension = d['extension']
         obj.context = d['context']
         # handle case where state_interface is missing (XiVO 15.14 or earlier)
