@@ -28,7 +28,7 @@ c.agents.unpause_agent_by_number(agent_number='1234')
 
 c.agents.login_user_agent(line_id=1)
 c.agents.pause_user_agent()
-c.agents.resume_user_agent()
+c.agents.unpause_user_agent()
 c.agents.logoff_user_agent()
 
 status = c.agents.get_agent_status(agent_id=12)
