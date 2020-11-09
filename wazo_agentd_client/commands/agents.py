@@ -326,6 +326,5 @@ class _AgentStatus(object):
         obj.paused = d['paused']
         obj.extension = d['extension']
         obj.context = d['context']
-        # handle case where state_interface is missing (XiVO 15.14 or earlier)
-        obj.state_interface = d.get('state_interface')
+        obj.state_interface = d['state_interface']
         return obj
