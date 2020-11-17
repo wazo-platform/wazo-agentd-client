@@ -189,6 +189,7 @@ class TestResponseProcessor(unittest.TestCase):
             'origin_uuid': '11-222',
             'number': '1002',
             'logged': True,
+            'paused': True,
             'extension': '1222',
             'context': 'alice',
             'state_interface': 'SIP/alice',
@@ -201,30 +202,10 @@ class TestResponseProcessor(unittest.TestCase):
         assert_that(status.origin_uuid, equal_to(v['origin_uuid']))
         assert_that(status.number, equal_to(v['number']))
         assert_that(status.logged, equal_to(v['logged']))
+        assert_that(status.paused, equal_to(v['paused']))
         assert_that(status.extension, equal_to(v['extension']))
         assert_that(status.context, equal_to(v['context']))
         assert_that(status.state_interface, equal_to(v['state_interface']))
-
-    def test_status_on_200_no_state_interface(self):
-        v = {
-            'id': 2,
-            'origin_uuid': '11-222',
-            'number': '1002',
-            'logged': True,
-            'extension': '1222',
-            'context': 'alice',
-        }
-        resp = new_response(200, v)
-
-        status = self.resp_processor.status(resp)
-
-        assert_that(status.id, equal_to(v['id']))
-        assert_that(status.origin_uuid, equal_to(v['origin_uuid']))
-        assert_that(status.number, equal_to(v['number']))
-        assert_that(status.logged, equal_to(v['logged']))
-        assert_that(status.extension, equal_to(v['extension']))
-        assert_that(status.context, equal_to(v['context']))
-        assert_that(status.state_interface, equal_to(None))
 
     def test_status_all_on_200(self):
         v = {
@@ -232,6 +213,7 @@ class TestResponseProcessor(unittest.TestCase):
             'origin_uuid': '11-222',
             'number': '1002',
             'logged': True,
+            'paused': False,
             'extension': '1222',
             'context': 'alice',
             'state_interface': 'SIP/alice',
@@ -244,6 +226,7 @@ class TestResponseProcessor(unittest.TestCase):
         assert_that(status.origin_uuid, equal_to(v['origin_uuid']))
         assert_that(status.number, equal_to(v['number']))
         assert_that(status.logged, equal_to(v['logged']))
+        assert_that(status.paused, equal_to(v['paused']))
         assert_that(status.extension, equal_to(v['extension']))
         assert_that(status.context, equal_to(v['context']))
         assert_that(status.state_interface, equal_to(v['state_interface']))
