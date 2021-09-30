@@ -65,10 +65,10 @@ class AgentsCommand(RESTCommand):
         req = self._req_factory.logoff_all(tenant_uuid=tenant_uuid, recurse=recurse)
         self._execute(req, self._resp_processor.generic)
 
-    def relog_all_agents(self, tenant_uuid=None, recurse=False):
+    def relog_all_agents(self, tenant_uuid=None, recurse=False, timeout=None):
         tenant_uuid = tenant_uuid or self._client.tenant()
         req = self._req_factory.relog_all(tenant_uuid=tenant_uuid, recurse=recurse)
-        self._execute(req, self._resp_processor.generic)
+        self._execute(req, self._resp_processor.generic, timeout=timeout)
 
     def pause_agent_by_number(self, agent_number, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant()
@@ -110,8 +110,9 @@ class AgentsCommand(RESTCommand):
         req = self._req_factory.status_all(tenant_uuid=tenant_uuid, recurse=recurse)
         return self._execute(req, self._resp_processor.status_all)
 
-    def _execute(self, req, processor_fun):
-        resp = self.session.send(self.session.prepare_request(req), timeout=self.timeout)
+    def _execute(self, req, processor_fun, timeout=None):
+        timeout = timeout if timeout is not None else self.timeout
+        resp = self.session.send(self.session.prepare_request(req), timeout=timeout)
         return processor_fun(resp)
 
 
