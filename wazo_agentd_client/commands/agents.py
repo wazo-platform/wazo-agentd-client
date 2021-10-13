@@ -19,64 +19,64 @@ class AgentsCommand(RESTCommand):
         self._resp_processor = _ResponseProcessor()
 
     def add_agent_to_queue(self, agent_id, queue_id, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.add_to_queue_by_id(agent_id, queue_id, tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
     def remove_agent_from_queue(self, agent_id, queue_id, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.remove_from_queue_by_id(agent_id, queue_id, tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
     def login_agent(self, agent_id, extension, context, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.login_by_id(agent_id, extension, context, tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
     def login_agent_by_number(self, agent_number, extension, context, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.login_by_number(agent_number, extension, context, tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
     def login_user_agent(self, line_id, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         user_req_factory = _RequestFactory(self._client.url())
         req = user_req_factory.login_user_agent(line_id, tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
     def logoff_agent(self, agent_id, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.logoff_by_id(agent_id, tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
     def logoff_agent_by_number(self, agent_number, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.logoff_by_number(agent_number, tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
     def logoff_user_agent(self, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         user_req_factory = _RequestFactory(self._client.url())
         req = user_req_factory.logoff_user_agent(tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
     def logoff_all_agents(self, tenant_uuid=None, recurse=False):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.logoff_all(tenant_uuid=tenant_uuid, recurse=recurse)
         self._execute(req, self._resp_processor.generic)
 
     def relog_all_agents(self, tenant_uuid=None, recurse=False, timeout=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.relog_all(tenant_uuid=tenant_uuid, recurse=recurse)
         self._execute(req, self._resp_processor.generic, timeout=timeout)
 
     def pause_agent_by_number(self, agent_number, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.pause_by_number(agent_number, tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
 
     def pause_user_agent(self, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         user_req_factory = _RequestFactory(self._client.url())
         req = user_req_factory.pause_user_agent(tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
@@ -86,7 +86,7 @@ class AgentsCommand(RESTCommand):
         self._execute(req, self._resp_processor.generic)
 
     def unpause_user_agent(self, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         user_req_factory = _RequestFactory(self._client.url())
         req = user_req_factory.unpause_user_agent(tenant_uuid=tenant_uuid)
         self._execute(req, self._resp_processor.generic)
@@ -100,13 +100,13 @@ class AgentsCommand(RESTCommand):
         return self._execute(req, self._resp_processor.status)
 
     def get_user_agent_status(self, tenant_uuid=None):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         user_req_factory = _RequestFactory(self._client.url())
         req = user_req_factory.status_user_agent(tenant_uuid=tenant_uuid)
         return self._execute(req, self._resp_processor.status)
 
     def get_agent_statuses(self, tenant_uuid=None, recurse=False):
-        tenant_uuid = tenant_uuid or self._client.tenant()
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.status_all(tenant_uuid=tenant_uuid, recurse=recurse)
         return self._execute(req, self._resp_processor.status_all)
 
