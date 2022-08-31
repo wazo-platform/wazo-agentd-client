@@ -23,6 +23,7 @@ setup(
     entry_points={
         'wazo_agentd_client.commands': [
             'agents = wazo_agentd_client.commands.agents:AgentsCommand',
+            'status = wazo_agentd_client.commands.status:StatusCommand',
         ],
     }
 )
