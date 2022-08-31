@@ -27,3 +27,4 @@ class AgentdCommand(RESTCommand):
             raise AgentdProtocolError(response)
         except InvalidAgentdError:
             RESTCommand.raise_from_response(response)
+
