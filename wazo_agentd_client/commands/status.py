@@ -4,13 +4,13 @@
 
 
 from wazo_lib_rest_client.command import RESTCommand
-from .agents import _ResponseProcessor
+from wazo_agentd_client.helpers import ResponseProcessor
 
 class StatusCommand(RESTCommand):
     resource = 'status'
 
     def __call__(self):
-        _resp_processor = _ResponseProcessor()
+        _resp_processor = ResponseProcessor()
         headers = self._get_headers()
         url = self.base_url
         r = self.session.get(url, headers=headers)
