@@ -5,26 +5,12 @@
 from wazo_lib_rest_client.command import RESTCommand
 
 from .exceptions import AgentdError
-from .exceptions import AgentdServiceUnavailable
-from .exceptions import InvalidAgentdError
-from .exceptions import AgentdProtocolError
+
 
 
 class AgentdCommand(RESTCommand):
     @staticmethod
     def raise_from_response(response):
-        if response.status_code == 503:
-            raise AgentdServiceUnavailable(response)
+        raise AgentdError(response)
 
-        try:
-            raise AgentdError(response)
-        except InvalidAgentdError:
-            RESTCommand.raise_from_response(response)
-
-    @staticmethod
-    def raise_from_protocol(response):
-        try:
-            raise AgentdProtocolError(response)
-        except InvalidAgentdError:
-            RESTCommand.raise_from_response(response)
 
