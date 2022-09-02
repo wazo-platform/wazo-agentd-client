@@ -7,8 +7,9 @@ import unittest
 from hamcrest import assert_that, equal_to
 from requests.exceptions import HTTPError
 from wazo_lib_rest_client.tests.command import RESTCommandTestCase
+from wazo_agentd_client.helpers import ResponseProcessor
 from wazo_agentd_client.error import AgentdClientError
-from wazo_agentd_client.commands.agents import _RequestFactory, _ResponseProcessor
+from wazo_agentd_client.commands.agents import _RequestFactory
 
 
 new_response = RESTCommandTestCase.new_response
@@ -156,7 +157,7 @@ class TestRequestFactory(unittest.TestCase):
 class TestResponseProcessor(unittest.TestCase):
 
     def setUp(self):
-        self.resp_processor = _ResponseProcessor()
+        self.resp_processor = ResponseProcessor()
 
     def test_generic_on_200(self):
         resp = new_response(200)
