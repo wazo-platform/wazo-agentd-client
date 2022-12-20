@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2015-2022 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -8,12 +7,13 @@ import requests
 from wazo_lib_rest_client import RESTCommand
 from wazo_agentd_client.helpers import ResponseProcessor
 
+
 class AgentsCommand(RESTCommand):
 
     resource = 'agents'
 
     def __init__(self, *args, **kwargs):
-        super(AgentsCommand, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self._req_factory = _RequestFactory(self.base_url)
         self._resp_processor = ResponseProcessor()
 
@@ -115,7 +115,7 @@ class AgentsCommand(RESTCommand):
         return processor_fun(resp)
 
 
-class _RequestFactory(object):
+class _RequestFactory:
 
     def __init__(self, base_url):
         self._base_url = base_url
@@ -136,7 +136,7 @@ class _RequestFactory(object):
         return self._remove_from_queue('by-id', agent_id, queue_id, tenant_uuid=tenant_uuid)
 
     def _remove_from_queue(self, by, value, queue_id, tenant_uuid=None):
-        url = '{}/{}/{}/remove'.format(self._base_url, by, value)
+        url = f'{self._base_url}/{by}/{value}/remove'
         obj = {'queue_id': queue_id}
         additional_headers = {}
         if tenant_uuid:

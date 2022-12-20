@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright 2015-2019 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2015-2022 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 NO_SUCH_AGENT = 'no such agent'
@@ -19,5 +18,5 @@ UNAUTHORIZED = 'invalid token or unauthorized'
 class AgentdClientError(Exception):
 
     def __init__(self, error):
-        super(AgentdClientError, self).__init__(error)
+        super().__init__(error)
         self.error = error
