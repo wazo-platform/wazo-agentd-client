@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright 2015-2019 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2015-2022 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -18,7 +17,6 @@ FAKE_TENANT = 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'
 
 
 class TestRequestFactory(unittest.TestCase):
-
     def setUp(self):
         self.base_url = 'http://example.org/foo'
         self.req_factory = _RequestFactory(self.base_url)
@@ -30,7 +28,7 @@ class TestRequestFactory(unittest.TestCase):
         self.line_id = 4
 
     def test_add_to_queue_by_id(self):
-        expected_url = '{}/by-id/2/add'.format(self.base_url)
+        expected_url = f'{self.base_url}/by-id/2/add'
         expected_body = {'queue_id': self.queue_id}
 
         req = self.req_factory.add_to_queue_by_id(self.agent_id, self.queue_id)
@@ -38,7 +36,7 @@ class TestRequestFactory(unittest.TestCase):
         self._assert_post_request(req, expected_url, expected_body)
 
     def test_remove_from_queue_by_id(self):
-        expected_url = '{}/by-id/2/remove'.format(self.base_url)
+        expected_url = f'{self.base_url}/by-id/2/remove'
         expected_body = {'queue_id': self.queue_id}
 
         req = self.req_factory.remove_from_queue_by_id(self.agent_id, self.queue_id)
@@ -46,7 +44,7 @@ class TestRequestFactory(unittest.TestCase):
         self._assert_post_request(req, expected_url, expected_body)
 
     def test_login_by_id(self):
-        expected_url = '{}/by-id/2/login'.format(self.base_url)
+        expected_url = f'{self.base_url}/by-id/2/login'
         expected_body = {'extension': self.extension, 'context': self.context}
 
         req = self.req_factory.login_by_id(self.agent_id, self.extension, self.context)
@@ -54,15 +52,17 @@ class TestRequestFactory(unittest.TestCase):
         self._assert_post_request(req, expected_url, expected_body)
 
     def test_login_by_number(self):
-        expected_url = '{}/by-number/1002/login'.format(self.base_url)
+        expected_url = f'{self.base_url}/by-number/1002/login'
         expected_body = {'extension': self.extension, 'context': self.context}
 
-        req = self.req_factory.login_by_number(self.agent_number, self.extension, self.context)
+        req = self.req_factory.login_by_number(
+            self.agent_number, self.extension, self.context
+        )
 
         self._assert_post_request(req, expected_url, expected_body)
 
     def test_login_user_agent(self):
-        expected_url = '{}/users/me/agents/login'.format(self.base_url)
+        expected_url = f'{self.base_url}/users/me/agents/login'
         expected_body = {'line_id': self.line_id}
 
         req = self.req_factory.login_user_agent(self.line_id)
@@ -70,63 +70,63 @@ class TestRequestFactory(unittest.TestCase):
         self._assert_post_request(req, expected_url, expected_body)
 
     def test_logoff_by_id(self):
-        expected_url = '{}/by-id/2/logoff'.format(self.base_url)
+        expected_url = f'{self.base_url}/by-id/2/logoff'
 
         req = self.req_factory.logoff_by_id(self.agent_id)
 
         self._assert_post_request(req, expected_url)
 
     def test_logoff_by_number(self):
-        expected_url = '{}/by-number/1002/logoff'.format(self.base_url)
+        expected_url = f'{self.base_url}/by-number/1002/logoff'
 
         req = self.req_factory.logoff_by_number(self.agent_number)
 
         self._assert_post_request(req, expected_url)
 
     def test_logoff_user_agent(self):
-        expected_url = '{}/users/me/agents/logoff'.format(self.base_url)
+        expected_url = f'{self.base_url}/users/me/agents/logoff'
 
         req = self.req_factory.logoff_user_agent()
 
         self._assert_post_request(req, expected_url, expected_body=None)
 
     def test_pause_by_number(self):
-        expected_url = '{}/by-number/1002/pause'.format(self.base_url)
+        expected_url = f'{self.base_url}/by-number/1002/pause'
 
         req = self.req_factory.pause_by_number(self.agent_number)
 
         self._assert_post_request(req, expected_url)
 
     def test_unpause_by_number(self):
-        expected_url = '{}/by-number/1002/unpause'.format(self.base_url)
+        expected_url = f'{self.base_url}/by-number/1002/unpause'
 
         req = self.req_factory.unpause_by_number(self.agent_number)
 
         self._assert_post_request(req, expected_url)
 
     def test_status_by_id(self):
-        expected_url = '{}/by-id/2'.format(self.base_url)
+        expected_url = f'{self.base_url}/by-id/2'
 
         req = self.req_factory.status_by_id(self.agent_id)
 
         self._assert_get_request(req, expected_url)
 
     def test_status_by_number(self):
-        expected_url = '{}/by-number/1002'.format(self.base_url)
+        expected_url = f'{self.base_url}/by-number/1002'
 
         req = self.req_factory.status_by_number(self.agent_number)
 
         self._assert_get_request(req, expected_url)
 
     def test_logoff_all(self):
-        expected_url = '{}/logoff'.format(self.base_url)
+        expected_url = f'{self.base_url}/logoff'
 
         req = self.req_factory.logoff_all()
 
         self._assert_post_request(req, expected_url)
 
     def test_relog_all(self):
-        expected_url = '{}/relog'.format(self.base_url)
+        expected_url = f'{self.base_url}/relog'
 
         req = self.req_factory.relog_all()
 
@@ -155,7 +155,6 @@ class TestRequestFactory(unittest.TestCase):
 
 
 class TestResponseProcessor(unittest.TestCase):
-
     def setUp(self):
         self.resp_processor = ResponseProcessor()
 
@@ -221,7 +220,7 @@ class TestResponseProcessor(unittest.TestCase):
         }
         resp = new_response(200, [v])
 
-        status, = self.resp_processor.status_all(resp)
+        status = self.resp_processor.status_all(resp)[0]
 
         assert_that(status.id, equal_to(v['id']))
         assert_that(status.origin_uuid, equal_to(v['origin_uuid']))

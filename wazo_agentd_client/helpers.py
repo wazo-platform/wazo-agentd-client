@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2022 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -6,8 +5,7 @@
 from wazo_agentd_client.error import AgentdClientError
 
 
-class ResponseProcessor(object):
-    
+class ResponseProcessor:
     def generic(self, resp):
         self._raise_if_not_success(resp)
 
@@ -39,8 +37,7 @@ class ResponseProcessor(object):
             resp.raise_for_status()
 
 
-class _AgentStatus(object):
-
+class _AgentStatus:
     def __init__(self, agent_id, agent_number, origin_uuid):
         self.id = agent_id
         self.number = agent_number
