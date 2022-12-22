@@ -19,22 +19,30 @@ class AgentsCommand(RESTCommand):
 
     def add_agent_to_queue(self, agent_id, queue_id, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
-        req = self._req_factory.add_to_queue_by_id(agent_id, queue_id, tenant_uuid=tenant_uuid)
+        req = self._req_factory.add_to_queue_by_id(
+            agent_id, queue_id, tenant_uuid=tenant_uuid
+        )
         self._execute(req, self._resp_processor.generic)
 
     def remove_agent_from_queue(self, agent_id, queue_id, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
-        req = self._req_factory.remove_from_queue_by_id(agent_id, queue_id, tenant_uuid=tenant_uuid)
+        req = self._req_factory.remove_from_queue_by_id(
+            agent_id, queue_id, tenant_uuid=tenant_uuid
+        )
         self._execute(req, self._resp_processor.generic)
 
     def login_agent(self, agent_id, extension, context, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
-        req = self._req_factory.login_by_id(agent_id, extension, context, tenant_uuid=tenant_uuid)
+        req = self._req_factory.login_by_id(
+            agent_id, extension, context, tenant_uuid=tenant_uuid
+        )
         self._execute(req, self._resp_processor.generic)
 
     def login_agent_by_number(self, agent_number, extension, context, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
-        req = self._req_factory.login_by_number(agent_number, extension, context, tenant_uuid=tenant_uuid)
+        req = self._req_factory.login_by_number(
+            agent_number, extension, context, tenant_uuid=tenant_uuid
+        )
         self._execute(req, self._resp_processor.generic)
 
     def login_user_agent(self, line_id, tenant_uuid=None):
@@ -116,7 +124,6 @@ class AgentsCommand(RESTCommand):
 
 
 class _RequestFactory:
-
     def __init__(self, base_url):
         self._base_url = base_url
         self._headers = {'Accept': 'application/json'}
@@ -133,7 +140,9 @@ class _RequestFactory:
         return self._new_post_request(url, obj, additional_headers=additional_headers)
 
     def remove_from_queue_by_id(self, agent_id, queue_id, tenant_uuid=None):
-        return self._remove_from_queue('by-id', agent_id, queue_id, tenant_uuid=tenant_uuid)
+        return self._remove_from_queue(
+            'by-id', agent_id, queue_id, tenant_uuid=tenant_uuid
+        )
 
     def _remove_from_queue(self, by, value, queue_id, tenant_uuid=None):
         url = f'{self._base_url}/{by}/{value}/remove'
@@ -144,10 +153,14 @@ class _RequestFactory:
         return self._new_post_request(url, obj, additional_headers=additional_headers)
 
     def login_by_id(self, agent_id, extension, context, tenant_uuid=None):
-        return self._login('by-id', agent_id, extension, context, tenant_uuid=tenant_uuid)
+        return self._login(
+            'by-id', agent_id, extension, context, tenant_uuid=tenant_uuid
+        )
 
     def login_by_number(self, agent_number, extension, context, tenant_uuid=None):
-        return self._login('by-number', agent_number, extension, context, tenant_uuid=tenant_uuid)
+        return self._login(
+            'by-number', agent_number, extension, context, tenant_uuid=tenant_uuid
+        )
 
     def _login(self, by, value, extension, context, tenant_uuid=None):
         url = f'{self._base_url}/{by}/{value}/login'
@@ -257,7 +270,9 @@ class _RequestFactory:
             additional_headers['Wazo-Tenant'] = tenant_uuid
         if recurse:
             params['recurse'] = True
-        return self._new_post_request(url, additional_headers=additional_headers, params=params)
+        return self._new_post_request(
+            url, additional_headers=additional_headers, params=params
+        )
 
     def status_all(self, tenant_uuid=None, recurse=False):
         url = self._base_url
@@ -267,7 +282,9 @@ class _RequestFactory:
             additional_headers['Wazo-Tenant'] = tenant_uuid
         if recurse:
             params['recurse'] = True
-        return self._new_get_request(url, additional_headers=additional_headers, params=params)
+        return self._new_get_request(
+            url, additional_headers=additional_headers, params=params
+        )
 
     def _new_get_request(self, url, additional_headers=None, params=None):
         headers = dict(self._headers)
@@ -285,4 +302,3 @@ class _RequestFactory:
             data = json.dumps(obj)
             headers['Content-Type'] = 'application/json'
         return requests.Request('POST', url, headers, data=data, params=params)
-

@@ -17,7 +17,6 @@ FAKE_TENANT = 'eeeeeeee-eeee-eeee-eeee-eeeeeeeeeeee'
 
 
 class TestRequestFactory(unittest.TestCase):
-
     def setUp(self):
         self.base_url = 'http://example.org/foo'
         self.req_factory = _RequestFactory(self.base_url)
@@ -56,7 +55,9 @@ class TestRequestFactory(unittest.TestCase):
         expected_url = f'{self.base_url}/by-number/1002/login'
         expected_body = {'extension': self.extension, 'context': self.context}
 
-        req = self.req_factory.login_by_number(self.agent_number, self.extension, self.context)
+        req = self.req_factory.login_by_number(
+            self.agent_number, self.extension, self.context
+        )
 
         self._assert_post_request(req, expected_url, expected_body)
 
@@ -154,7 +155,6 @@ class TestRequestFactory(unittest.TestCase):
 
 
 class TestResponseProcessor(unittest.TestCase):
-
     def setUp(self):
         self.resp_processor = ResponseProcessor()
 
@@ -220,7 +220,7 @@ class TestResponseProcessor(unittest.TestCase):
         }
         resp = new_response(200, [v])
 
-        status, = self.resp_processor.status_all(resp)
+        status = self.resp_processor.status_all(resp)[0]
 
         assert_that(status.id, equal_to(v['id']))
         assert_that(status.origin_uuid, equal_to(v['origin_uuid']))

@@ -6,7 +6,6 @@ from wazo_agentd_client.error import AgentdClientError
 
 
 class ResponseProcessor:
-    
     def generic(self, resp):
         self._raise_if_not_success(resp)
 
@@ -39,7 +38,6 @@ class ResponseProcessor:
 
 
 class _AgentStatus:
-
     def __init__(self, agent_id, agent_number, origin_uuid):
         self.id = agent_id
         self.number = agent_number
