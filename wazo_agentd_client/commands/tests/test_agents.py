@@ -1,15 +1,16 @@
-# Copyright 2015-2022 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2015-2023 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
 import unittest
+
 from hamcrest import assert_that, equal_to
 from requests.exceptions import HTTPError
 from wazo_lib_rest_client.tests.command import RESTCommandTestCase
-from wazo_agentd_client.helpers import ResponseProcessor
-from wazo_agentd_client.error import AgentdClientError
-from wazo_agentd_client.commands.agents import _RequestFactory
 
+from wazo_agentd_client.commands.agents import _RequestFactory
+from wazo_agentd_client.error import AgentdClientError
+from wazo_agentd_client.helpers import ResponseProcessor
 
 new_response = RESTCommandTestCase.new_response
 
