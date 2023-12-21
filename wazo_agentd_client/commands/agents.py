@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
-import requests
 
+import requests
 from wazo_lib_rest_client import RESTCommand
+
 from wazo_agentd_client.helpers import ResponseProcessor
 
 
