@@ -1,4 +1,4 @@
-# Copyright 2015-2023 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2015-2024 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -194,6 +194,7 @@ class TestResponseProcessor(unittest.TestCase):
             'extension': '1222',
             'context': 'alice',
             'state_interface': 'SIP/alice',
+            'tenant_uuid': FAKE_TENANT,
         }
         resp = new_response(200, v)
 
@@ -207,6 +208,7 @@ class TestResponseProcessor(unittest.TestCase):
         assert_that(status.extension, equal_to(v['extension']))
         assert_that(status.context, equal_to(v['context']))
         assert_that(status.state_interface, equal_to(v['state_interface']))
+        assert_that(status.tenant_uuid, equal_to(FAKE_TENANT))
 
     def test_status_all_on_200(self):
         v = {
@@ -218,6 +220,7 @@ class TestResponseProcessor(unittest.TestCase):
             'extension': '1222',
             'context': 'alice',
             'state_interface': 'SIP/alice',
+            'tenant_uuid': FAKE_TENANT,
         }
         resp = new_response(200, [v])
 
@@ -231,3 +234,4 @@ class TestResponseProcessor(unittest.TestCase):
         assert_that(status.extension, equal_to(v['extension']))
         assert_that(status.context, equal_to(v['context']))
         assert_that(status.state_interface, equal_to(v['state_interface']))
+        assert_that(status.tenant_uuid, equal_to(FAKE_TENANT))
