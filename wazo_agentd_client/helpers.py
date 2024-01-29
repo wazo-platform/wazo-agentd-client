@@ -47,6 +47,7 @@ class _AgentStatus:
         self.extension = None
         self.context = None
         self.state_interface = None
+        self.tenant_uuid = None
 
     @classmethod
     def new_from_dict(cls, d):
@@ -56,4 +57,5 @@ class _AgentStatus:
         obj.extension = d['extension']
         obj.context = d['context']
         obj.state_interface = d['state_interface']
+        obj.tenant_uuid = d['tenant_uuid']
         return obj
