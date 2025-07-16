@@ -1,6 +1,8 @@
-# Copyright 2022 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2022-2025 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
+from __future__ import annotations
 
+from dataclasses import dataclass, field
 
 from wazo_agentd_client.error import AgentdClientError
 
@@ -37,17 +39,18 @@ class ResponseProcessor:
             resp.raise_for_status()
 
 
+@dataclass
 class _AgentStatus:
-    def __init__(self, agent_id, agent_number, origin_uuid):
-        self.id = agent_id
-        self.number = agent_number
-        self.origin_uuid = origin_uuid
-        self.logged = False
-        self.paused = None
-        self.extension = None
-        self.context = None
-        self.state_interface = None
-        self.tenant_uuid = None
+    id: str
+    number: str
+    origin_uuid: str
+    logged: bool = False
+    paused: bool = False
+    extension: str | None = None
+    context: str | None = None
+    state_interface: str | None = None
+    tenant_uuid: str | None = None
+    queues: list[str] = field(default_factory=list)
 
     @classmethod
     def new_from_dict(cls, d):
@@ -58,4 +61,5 @@ class _AgentStatus:
         obj.context = d['context']
         obj.state_interface = d['state_interface']
         obj.tenant_uuid = d['tenant_uuid']
+        obj.queues = d.get('queues', [])
         return obj
