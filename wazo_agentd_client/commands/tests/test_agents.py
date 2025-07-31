@@ -1,4 +1,4 @@
-# Copyright 2015-2024 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2015-2025 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -43,6 +43,27 @@ class TestRequestFactory(unittest.TestCase):
         req = self.req_factory.remove_from_queue_by_id(self.agent_id, self.queue_id)
 
         self._assert_post_request(req, expected_url, expected_body)
+
+    def test_list_user_queues(self):
+        expected_url = f'{self.base_url}/users/me/agents/queues'
+
+        req = self.req_factory.list_user_queues()
+
+        self._assert_get_request(req, expected_url)
+
+    def test_list_queues_by_id(self):
+        expected_url = f'{self.base_url}/by-id/2/queues'
+
+        req = self.req_factory.list_queues_by_id(self.agent_id)
+
+        self._assert_get_request(req, expected_url)
+
+    def test_list_queues_by_number(self):
+        expected_url = f'{self.base_url}/by-number/1002/queues'
+
+        req = self.req_factory.list_queues_by_number(self.agent_number)
+
+        self._assert_get_request(req, expected_url)
 
     def test_login_by_id(self):
         expected_url = f'{self.base_url}/by-id/2/login'
@@ -235,3 +256,22 @@ class TestResponseProcessor(unittest.TestCase):
         assert_that(status.context, equal_to(v['context']))
         assert_that(status.state_interface, equal_to(v['state_interface']))
         assert_that(status.tenant_uuid, equal_to(FAKE_TENANT))
+
+    def test_queue_list_on_200(self):
+        v = [
+            {
+                'id': 1,
+                'name': 'queue1',
+                'tenant_uuid': FAKE_TENANT,
+            },
+            {
+                'id': 2,
+                'name': 'queue2',
+                'tenant_uuid': FAKE_TENANT,
+            },
+        ]
+        resp = new_response(200, v)
+
+        result = self.resp_processor.queue_list(resp)
+
+        assert_that(result, equal_to(v))

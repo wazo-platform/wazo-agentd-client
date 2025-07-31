@@ -14,6 +14,10 @@ c = Client('agentd.example.com')
 c.agents.add_agent_to_queue(agent_id=12, queue_id=13)
 c.agents.remove_agent_from_queue(agent_id=12, queue_id=13)
 
+queues = c.agents.list_queues(agent_id=12)
+queues = c.agents.list_queues_by_number(agent_number='1234')
+queues = c.agents.list_user_queues()
+
 c.agents.login_agent(agent_id=12, extension='5678', context='internal')
 c.agents.logoff_agent(agent_id=12)
 
