@@ -18,6 +18,21 @@ queues = c.agents.list_queues(agent_id=12)
 queues = c.agents.list_queues_by_number(agent_number='1234')
 queues = c.agents.list_user_queues()
 
+# With sorting parameters
+queues = c.agents.list_queues(agent_id=12, order='name', direction='asc')
+queues = c.agents.list_queues_by_number(agent_number='1234', order='id', direction='desc')
+queues = c.agents.list_user_queues(order='name', direction='asc')
+
+# With pagination parameters
+queues = c.agents.list_queues(agent_id=12, limit=10, offset=20)
+queues = c.agents.list_queues_by_number(agent_number='1234', limit=5, offset=10)
+queues = c.agents.list_user_queues(limit=15, offset=30)
+
+# With sorting and pagination
+queues = c.agents.list_queues(agent_id=12, order='name', direction='asc', limit=10, offset=20)
+queues = c.agents.list_queues_by_number(agent_number='1234', order='id', direction='desc', limit=5, offset=10)
+queues = c.agents.list_user_queues(order='name', direction='asc', limit=15, offset=30)
+
 c.agents.login_agent(agent_id=12, extension='5678', context='internal')
 c.agents.logoff_agent(agent_id=12)
 

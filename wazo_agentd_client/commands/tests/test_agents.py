@@ -51,6 +51,29 @@ class TestRequestFactory(unittest.TestCase):
 
         self._assert_get_request(req, expected_url)
 
+    def test_list_user_queues_with_params(self):
+        expected_url = f'{self.base_url}/users/me/agents/queues'
+        expected_params = {'order': 'name', 'direction': 'asc'}
+
+        req = self.req_factory.list_user_queues(order='name', direction='asc')
+
+        self._assert_get_request_with_params(req, expected_url, expected_params)
+
+    def test_list_user_queues_with_pagination(self):
+        expected_url = f'{self.base_url}/users/me/agents/queues'
+        expected_params = {
+            'order': 'name',
+            'direction': 'asc',
+            'limit': '10',
+            'offset': '20',
+        }
+
+        req = self.req_factory.list_user_queues(
+            order='name', direction='asc', limit=10, offset=20
+        )
+
+        self._assert_get_request_with_params(req, expected_url, expected_params)
+
     def test_list_queues_by_id(self):
         expected_url = f'{self.base_url}/by-id/2/queues'
 
@@ -58,12 +81,62 @@ class TestRequestFactory(unittest.TestCase):
 
         self._assert_get_request(req, expected_url)
 
+    def test_list_queues_by_id_with_params(self):
+        expected_url = f'{self.base_url}/by-id/2/queues'
+        expected_params = {'order': 'id', 'direction': 'desc'}
+
+        req = self.req_factory.list_queues_by_id(
+            self.agent_id, order='id', direction='desc'
+        )
+
+        self._assert_get_request_with_params(req, expected_url, expected_params)
+
+    def test_list_queues_by_id_with_pagination(self):
+        expected_url = f'{self.base_url}/by-id/2/queues'
+        expected_params = {
+            'order': 'id',
+            'direction': 'desc',
+            'limit': '5',
+            'offset': '10',
+        }
+
+        req = self.req_factory.list_queues_by_id(
+            self.agent_id, order='id', direction='desc', limit=5, offset=10
+        )
+
+        self._assert_get_request_with_params(req, expected_url, expected_params)
+
     def test_list_queues_by_number(self):
         expected_url = f'{self.base_url}/by-number/1002/queues'
 
         req = self.req_factory.list_queues_by_number(self.agent_number)
 
         self._assert_get_request(req, expected_url)
+
+    def test_list_queues_by_number_with_params(self):
+        expected_url = f'{self.base_url}/by-number/1002/queues'
+        expected_params = {'order': 'name', 'direction': 'asc'}
+
+        req = self.req_factory.list_queues_by_number(
+            self.agent_number, order='name', direction='asc'
+        )
+
+        self._assert_get_request_with_params(req, expected_url, expected_params)
+
+    def test_list_queues_by_number_with_pagination(self):
+        expected_url = f'{self.base_url}/by-number/1002/queues'
+        expected_params = {
+            'order': 'name',
+            'direction': 'asc',
+            'limit': '15',
+            'offset': '30',
+        }
+
+        req = self.req_factory.list_queues_by_number(
+            self.agent_number, order='name', direction='asc', limit=15, offset=30
+        )
+
+        self._assert_get_request_with_params(req, expected_url, expected_params)
 
     def test_login_by_id(self):
         expected_url = f'{self.base_url}/by-id/2/login'
@@ -174,6 +247,15 @@ class TestRequestFactory(unittest.TestCase):
             assert_that(prep_req.body, equal_to(None))
         else:
             assert_that(json.loads(prep_req.body), equal_to(expected_body))
+
+    def _assert_get_request_with_params(self, req, expected_url, expected_params):
+        prep_req = req.prepare()
+        before_params, after_params = prep_req.url.split('?', 1)
+        pairs = [pair.split('=', 1) for pair in after_params.split('&')]
+        params = {k: v for (k, v) in pairs}
+        assert_that(prep_req.method, equal_to('GET'))
+        assert_that(params, equal_to(expected_params))
+        assert_that(before_params, equal_to(expected_url))
 
 
 class TestResponseProcessor(unittest.TestCase):

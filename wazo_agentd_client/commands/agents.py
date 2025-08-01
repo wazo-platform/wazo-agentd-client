@@ -31,21 +31,57 @@ class AgentsCommand(RESTCommand):
         )
         self._execute(req, self._resp_processor.generic)
 
-    def list_user_queues(self, tenant_uuid=None):
+    def list_user_queues(
+        self, tenant_uuid=None, order=None, direction=None, limit=None, offset=None
+    ):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
         user_req_factory = _RequestFactory(self._client.url())
-        req = user_req_factory.list_user_queues(tenant_uuid=tenant_uuid)
+        req = user_req_factory.list_user_queues(
+            tenant_uuid=tenant_uuid,
+            order=order,
+            direction=direction,
+            limit=limit,
+            offset=offset,
+        )
         return self._execute(req, self._resp_processor.queue_list)
 
-    def list_queues(self, agent_id, tenant_uuid=None):
+    def list_queues(
+        self,
+        agent_id,
+        tenant_uuid=None,
+        order=None,
+        direction=None,
+        limit=None,
+        offset=None,
+    ):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
-        req = self._req_factory.list_queues_by_id(agent_id, tenant_uuid=tenant_uuid)
+        req = self._req_factory.list_queues_by_id(
+            agent_id,
+            tenant_uuid=tenant_uuid,
+            order=order,
+            direction=direction,
+            limit=limit,
+            offset=offset,
+        )
         return self._execute(req, self._resp_processor.queue_list)
 
-    def list_queues_by_number(self, agent_number, tenant_uuid=None):
+    def list_queues_by_number(
+        self,
+        agent_number,
+        tenant_uuid=None,
+        order=None,
+        direction=None,
+        limit=None,
+        offset=None,
+    ):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.list_queues_by_number(
-            agent_number, tenant_uuid=tenant_uuid
+            agent_number,
+            tenant_uuid=tenant_uuid,
+            order=order,
+            direction=direction,
+            limit=limit,
+            offset=offset,
         )
         return self._execute(req, self._resp_processor.queue_list)
 
@@ -170,26 +206,77 @@ class _RequestFactory:
             additional_headers['Wazo-Tenant'] = tenant_uuid
         return self._new_post_request(url, obj, additional_headers=additional_headers)
 
-    def list_user_queues(self, tenant_uuid=None):
+    def list_user_queues(
+        self, tenant_uuid=None, order=None, direction=None, limit=None, offset=None
+    ):
         url = f'{self._base_url}/users/me/agents/queues'
         additional_headers = {}
+        params = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
-        return self._new_get_request(url, additional_headers=additional_headers)
+        if order:
+            params['order'] = order
+        if direction:
+            params['direction'] = direction
+        if limit:
+            params['limit'] = limit
+        if offset:
+            params['offset'] = offset
+        return self._new_get_request(
+            url, additional_headers=additional_headers, params=params
+        )
 
-    def list_queues_by_id(self, agent_id, tenant_uuid=None):
+    def list_queues_by_id(
+        self,
+        agent_id,
+        tenant_uuid=None,
+        order=None,
+        direction=None,
+        limit=None,
+        offset=None,
+    ):
         url = f'{self._base_url}/by-id/{agent_id}/queues'
         additional_headers = {}
+        params = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
-        return self._new_get_request(url, additional_headers=additional_headers)
+        if order:
+            params['order'] = order
+        if direction:
+            params['direction'] = direction
+        if limit:
+            params['limit'] = limit
+        if offset:
+            params['offset'] = offset
+        return self._new_get_request(
+            url, additional_headers=additional_headers, params=params
+        )
 
-    def list_queues_by_number(self, agent_number, tenant_uuid=None):
+    def list_queues_by_number(
+        self,
+        agent_number,
+        tenant_uuid=None,
+        order=None,
+        direction=None,
+        limit=None,
+        offset=None,
+    ):
         url = f'{self._base_url}/by-number/{agent_number}/queues'
         additional_headers = {}
+        params = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
-        return self._new_get_request(url, additional_headers=additional_headers)
+        if order:
+            params['order'] = order
+        if direction:
+            params['direction'] = direction
+        if limit:
+            params['limit'] = limit
+        if offset:
+            params['offset'] = offset
+        return self._new_get_request(
+            url, additional_headers=additional_headers, params=params
+        )
 
     def login_by_id(self, agent_id, extension, context, tenant_uuid=None):
         return self._login(
