@@ -21,6 +21,10 @@ class ResponseProcessor:
 
         return [_AgentStatus.new_from_dict(d) for d in resp.json()]
 
+    def queue_list(self, resp):
+        self._raise_if_not_success(resp, 200)
+        return resp.json()
+
     def _raise_if_not_success(self, resp, expected_status_code=None):
         status_code_class = resp.status_code // 100
         if status_code_class == 4 or status_code_class == 5:
