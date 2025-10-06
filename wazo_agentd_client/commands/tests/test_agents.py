@@ -1,4 +1,4 @@
-# Copyright 2015-2024 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2015-2025 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -96,12 +96,40 @@ class TestRequestFactory(unittest.TestCase):
 
         req = self.req_factory.pause_by_number(self.agent_number)
 
-        self._assert_post_request(req, expected_url)
+        self._assert_post_request(req, expected_url, expected_body={})
+
+    def test_pause_by_number_with_reason(self):
+        expected_url = f'{self.base_url}/by-number/1002/pause'
+
+        req = self.req_factory.pause_by_number(self.agent_number, reason='test')
+
+        self._assert_post_request(req, expected_url, expected_body={'reason': 'test'})
 
     def test_unpause_by_number(self):
         expected_url = f'{self.base_url}/by-number/1002/unpause'
 
         req = self.req_factory.unpause_by_number(self.agent_number)
+
+        self._assert_post_request(req, expected_url)
+
+    def test_pause_user_me(self):
+        expected_url = f'{self.base_url}/users/me/agents/pause'
+
+        req = self.req_factory.pause_user_agent()
+
+        self._assert_post_request(req, expected_url, expected_body={})
+
+    def test_pause_user_me_with_reason(self):
+        expected_url = f'{self.base_url}/users/me/agents/pause'
+
+        req = self.req_factory.pause_user_agent(reason='test')
+
+        self._assert_post_request(req, expected_url, expected_body={'reason': 'test'})
+
+    def test_unpause_user_me(self):
+        expected_url = f'{self.base_url}/users/me/agents/unpause'
+
+        req = self.req_factory.unpause_user_agent()
 
         self._assert_post_request(req, expected_url)
 
