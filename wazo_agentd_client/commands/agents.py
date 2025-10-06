@@ -1,4 +1,4 @@
-# Copyright 2015-2023 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2015-2025 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -198,22 +198,34 @@ class _RequestFactory:
             additional_headers['Wazo-Tenant'] = tenant_uuid
         return self._new_post_request(url, additional_headers=additional_headers)
 
-    def pause_by_number(self, agent_number, tenant_uuid=None):
-        return self._pause('by-number', agent_number, tenant_uuid=tenant_uuid)
+    def pause_by_number(self, agent_number, tenant_uuid=None, reason=None):
+        return self._pause(
+            'by-number', agent_number, tenant_uuid=tenant_uuid, reason=reason
+        )
 
-    def _pause(self, by, value, tenant_uuid=None):
+    def _pause(self, by, value, tenant_uuid=None, reason=None):
         url = f'{self._base_url}/{by}/{value}/pause'
         additional_headers = {}
+        body = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
-        return self._new_post_request(url, additional_headers=additional_headers)
+        if reason:
+            body['reason'] = reason
+        return self._new_post_request(
+            url, obj=body, additional_headers=additional_headers
+        )
 
-    def pause_user_agent(self, tenant_uuid=None):
+    def pause_user_agent(self, tenant_uuid=None, reason=None):
         url = f'{self._base_url}/users/me/agents/pause'
         additional_headers = {}
+        body = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
-        return self._new_post_request(url, additional_headers=additional_headers)
+        if reason:
+            body['reason'] = reason
+        return self._new_post_request(
+            url, obj=body, additional_headers=additional_headers
+        )
 
     def unpause_by_number(self, agent_number, tenant_uuid=None):
         return self._unpause('by-number', agent_number, tenant_uuid=tenant_uuid)
