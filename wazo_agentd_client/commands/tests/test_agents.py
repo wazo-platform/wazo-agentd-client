@@ -25,6 +25,7 @@ class TestRequestFactory(unittest.TestCase):
         self.agent_number = '1002'
         self.extension = '1222'
         self.context = 'alice'
+        self.endpoint = 'SIP/alice'
         self.queue_id = 3
         self.line_id = 4
 
@@ -46,18 +47,28 @@ class TestRequestFactory(unittest.TestCase):
 
     def test_login_by_id(self):
         expected_url = f'{self.base_url}/by-id/2/login'
-        expected_body = {'extension': self.extension, 'context': self.context}
+        expected_body = {
+            'extension': self.extension,
+            'context': self.context,
+            'endpoint': self.endpoint,
+        }
 
-        req = self.req_factory.login_by_id(self.agent_id, self.extension, self.context)
+        req = self.req_factory.login_by_id(
+            self.agent_id, self.extension, self.context, self.endpoint
+        )
 
         self._assert_post_request(req, expected_url, expected_body)
 
     def test_login_by_number(self):
         expected_url = f'{self.base_url}/by-number/1002/login'
-        expected_body = {'extension': self.extension, 'context': self.context}
+        expected_body = {
+            'extension': self.extension,
+            'context': self.context,
+            'endpoint': self.endpoint,
+        }
 
         req = self.req_factory.login_by_number(
-            self.agent_number, self.extension, self.context
+            self.agent_number, self.extension, self.context, self.endpoint
         )
 
         self._assert_post_request(req, expected_url, expected_body)

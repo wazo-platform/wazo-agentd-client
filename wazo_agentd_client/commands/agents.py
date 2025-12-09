@@ -31,17 +31,21 @@ class AgentsCommand(RESTCommand):
         )
         self._execute(req, self._resp_processor.generic)
 
-    def login_agent(self, agent_id, extension, context, tenant_uuid=None):
+    def login_agent(
+        self, agent_id, extension, context, endpoint=None, tenant_uuid=None
+    ):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.login_by_id(
-            agent_id, extension, context, tenant_uuid=tenant_uuid
+            agent_id, extension, context, endpoint=endpoint, tenant_uuid=tenant_uuid
         )
         self._execute(req, self._resp_processor.generic)
 
-    def login_agent_by_number(self, agent_number, extension, context, tenant_uuid=None):
+    def login_agent_by_number(
+        self, agent_number, extension, context, endpoint=None, tenant_uuid=None
+    ):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
         req = self._req_factory.login_by_number(
-            agent_number, extension, context, tenant_uuid=tenant_uuid
+            agent_number, extension, context, endpoint=endpoint, tenant_uuid=tenant_uuid
         )
         self._execute(req, self._resp_processor.generic)
 
@@ -152,19 +156,30 @@ class _RequestFactory:
             additional_headers['Wazo-Tenant'] = tenant_uuid
         return self._new_post_request(url, obj, additional_headers=additional_headers)
 
-    def login_by_id(self, agent_id, extension, context, tenant_uuid=None):
+    def login_by_id(
+        self, agent_id, extension, context, endpoint=None, tenant_uuid=None
+    ):
         return self._login(
-            'by-id', agent_id, extension, context, tenant_uuid=tenant_uuid
+            'by-id', agent_id, extension, context, endpoint, tenant_uuid=tenant_uuid
         )
 
-    def login_by_number(self, agent_number, extension, context, tenant_uuid=None):
+    def login_by_number(
+        self, agent_number, extension, context, endpoint=None, tenant_uuid=None
+    ):
         return self._login(
-            'by-number', agent_number, extension, context, tenant_uuid=tenant_uuid
+            'by-number',
+            agent_number,
+            extension,
+            context,
+            endpoint,
+            tenant_uuid=tenant_uuid,
         )
 
-    def _login(self, by, value, extension, context, tenant_uuid=None):
+    def _login(self, by, value, extension, context, endpoint=None, tenant_uuid=None):
         url = f'{self._base_url}/{by}/{value}/login'
         obj = {'extension': extension, 'context': context}
+        if endpoint:
+            obj['endpoint'] = endpoint
         additional_headers = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
