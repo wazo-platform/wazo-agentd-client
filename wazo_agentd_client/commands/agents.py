@@ -124,13 +124,17 @@ class AgentsCommand(RESTCommand):
     def subscribe_user_agent_to_queue(self, queue_id, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
         user_req_factory = _RequestFactory(self._client.url())
-        req = user_req_factory.subscribe_user_agent_to_queue(queue_id, tenant_uuid=tenant_uuid)
+        req = user_req_factory.subscribe_user_agent_to_queue(
+            queue_id, tenant_uuid=tenant_uuid
+        )
         return self._execute(req, self._resp_processor.generic)
 
     def unsubscribe_user_agent_from_queue(self, queue_id, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
         user_req_factory = _RequestFactory(self._client.url())
-        req = user_req_factory.unsubscribe_user_agent_from_queue(queue_id, tenant_uuid=tenant_uuid)
+        req = user_req_factory.unsubscribe_user_agent_from_queue(
+            queue_id, tenant_uuid=tenant_uuid
+        )
         return self._execute(req, self._resp_processor.generic)
 
     def _execute(self, req, processor_fun, timeout=None):
