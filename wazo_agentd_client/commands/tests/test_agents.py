@@ -179,6 +179,20 @@ class TestRequestFactory(unittest.TestCase):
 
         self._assert_get_request(req, expected_url)
 
+    def test_user_agent_login_to_queue(self):
+        expected_url = f'{self.base_url}/users/me/agents/queues/1/login'
+
+        req = self.req_factory.user_agent_login_to_queue(1)
+
+        self._assert_put_request(req, expected_url)
+
+    def test_user_agent_logoff_to_queue(self):
+        expected_url = f'{self.base_url}/users/me/agents/queues/1/logoff'
+
+        req = self.req_factory.user_agent_logoff_from_queue(1)
+
+        self._assert_put_request(req, expected_url)
+
     def _assert_get_request(self, req, expected_url):
         prep_req = req.prepare()
         assert_that(prep_req.method, equal_to('GET'))
@@ -187,6 +201,15 @@ class TestRequestFactory(unittest.TestCase):
     def _assert_post_request(self, req, expected_url, expected_body=None):
         prep_req = req.prepare()
         assert_that(prep_req.method, equal_to('POST'))
+        assert_that(prep_req.url, equal_to(expected_url))
+        if expected_body is None:
+            assert_that(prep_req.body, equal_to(None))
+        else:
+            assert_that(json.loads(prep_req.body), equal_to(expected_body))
+
+    def _assert_put_request(self, req, expected_url, expected_body=None):
+        prep_req = req.prepare()
+        assert_that(prep_req.method, equal_to('PUT'))
         assert_that(prep_req.url, equal_to(expected_url))
         if expected_body is None:
             assert_that(prep_req.body, equal_to(None))

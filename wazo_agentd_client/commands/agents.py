@@ -121,18 +121,18 @@ class AgentsCommand(RESTCommand):
         req = self._req_factory.status_all(tenant_uuid=tenant_uuid, recurse=recurse)
         return self._execute(req, self._resp_processor.status_all)
 
-    def subscribe_user_agent_to_queue(self, queue_id, tenant_uuid=None):
+    def user_agent_login_to_queue(self, queue_id, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
         user_req_factory = _RequestFactory(self._client.url())
-        req = user_req_factory.subscribe_user_agent_to_queue(
+        req = user_req_factory.user_agent_login_to_queue(
             queue_id, tenant_uuid=tenant_uuid
         )
         return self._execute(req, self._resp_processor.generic)
 
-    def unsubscribe_user_agent_from_queue(self, queue_id, tenant_uuid=None):
+    def user_agent_logoff_from_queue(self, queue_id, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
         user_req_factory = _RequestFactory(self._client.url())
-        req = user_req_factory.unsubscribe_user_agent_from_queue(
+        req = user_req_factory.user_agent_logoff_from_queue(
             queue_id, tenant_uuid=tenant_uuid
         )
         return self._execute(req, self._resp_processor.generic)
@@ -329,15 +329,15 @@ class _RequestFactory:
             url, additional_headers=additional_headers, params=params
         )
 
-    def subscribe_user_agent_to_queue(self, queue_id, tenant_uuid=None):
-        url = f'{self._base_url}/users/me/agents/queues/{queue_id}/subscribe'
+    def user_agent_login_to_queue(self, queue_id, tenant_uuid=None):
+        url = f'{self._base_url}/users/me/agents/queues/{queue_id}/login'
         additional_headers = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
         return self._new_put_request(url, additional_headers=additional_headers)
 
-    def unsubscribe_user_agent_from_queue(self, queue_id, tenant_uuid=None):
-        url = f'{self._base_url}/users/me/agents/queues/{queue_id}/unsubscribe'
+    def user_agent_logoff_from_queue(self, queue_id, tenant_uuid=None):
+        url = f'{self._base_url}/users/me/agents/queues/{queue_id}/logoff'
         additional_headers = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
