@@ -186,7 +186,7 @@ class TestRequestFactory(unittest.TestCase):
 
         self._assert_put_request(req, expected_url)
 
-    def test_user_agent_logoff_to_queue(self):
+    def test_user_agent_logoff_from_queue(self):
         expected_url = f'{self.base_url}/users/me/agents/queues/1/logoff'
 
         req = self.req_factory.user_agent_logoff_from_queue(1)
