@@ -32,6 +32,9 @@ c.agents.unpause_user_agent()
 c.agents.logoff_user_agent()
 c.agents.get_user_agent_status()
 
+c.agents.user_agent_login_to_queue(queue_id=13)
+c.agents.user_agent_logoff_from_queue(queue_id=13)
+
 status = c.agents.get_agent_status(agent_id=12)
 status = c.agents.get_agent_status_by_number(agent_number='1234')
 status = c.agents.get_agent_statuses()

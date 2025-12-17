@@ -121,6 +121,22 @@ class AgentsCommand(RESTCommand):
         req = self._req_factory.status_all(tenant_uuid=tenant_uuid, recurse=recurse)
         return self._execute(req, self._resp_processor.status_all)
 
+    def user_agent_login_to_queue(self, queue_id, tenant_uuid=None):
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
+        user_req_factory = _RequestFactory(self._client.url())
+        req = user_req_factory.user_agent_login_to_queue(
+            queue_id, tenant_uuid=tenant_uuid
+        )
+        return self._execute(req, self._resp_processor.generic)
+
+    def user_agent_logoff_from_queue(self, queue_id, tenant_uuid=None):
+        tenant_uuid = tenant_uuid or self._client.tenant_uuid
+        user_req_factory = _RequestFactory(self._client.url())
+        req = user_req_factory.user_agent_logoff_from_queue(
+            queue_id, tenant_uuid=tenant_uuid
+        )
+        return self._execute(req, self._resp_processor.generic)
+
     def _execute(self, req, processor_fun, timeout=None):
         timeout = timeout if timeout is not None else self.timeout
         resp = self.session.send(self.session.prepare_request(req), timeout=timeout)
@@ -313,6 +329,20 @@ class _RequestFactory:
             url, additional_headers=additional_headers, params=params
         )
 
+    def user_agent_login_to_queue(self, queue_id, tenant_uuid=None):
+        url = f'{self._base_url}/users/me/agents/queues/{queue_id}/login'
+        additional_headers = {}
+        if tenant_uuid:
+            additional_headers['Wazo-Tenant'] = tenant_uuid
+        return self._new_put_request(url, additional_headers=additional_headers)
+
+    def user_agent_logoff_from_queue(self, queue_id, tenant_uuid=None):
+        url = f'{self._base_url}/users/me/agents/queues/{queue_id}/logoff'
+        additional_headers = {}
+        if tenant_uuid:
+            additional_headers['Wazo-Tenant'] = tenant_uuid
+        return self._new_put_request(url, additional_headers=additional_headers)
+
     def _new_get_request(self, url, additional_headers=None, params=None):
         headers = dict(self._headers)
         if additional_headers:
@@ -329,3 +359,14 @@ class _RequestFactory:
             data = json.dumps(obj)
             headers['Content-Type'] = 'application/json'
         return requests.Request('POST', url, headers, data=data, params=params)
+
+    def _new_put_request(self, url, obj=None, additional_headers=None, params=None):
+        headers = dict(self._headers)
+        if additional_headers:
+            headers.update(additional_headers)
+        if obj is None:
+            data = None
+        else:
+            data = json.dumps(obj)
+            headers['Content-Type'] = 'application/json'
+        return requests.Request('PUT', url, headers, data=data, params=params)
