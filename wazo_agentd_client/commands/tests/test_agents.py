@@ -25,7 +25,7 @@ class TestRequestFactory(unittest.TestCase):
         self.agent_number = '1002'
         self.extension = '1222'
         self.context = 'alice'
-        self.endpoint = 'SIP/alice'
+        self.endpoint = 'PJSIP/alice'
         self.queue_id = 3
         self.line_id = 4
 
@@ -232,7 +232,7 @@ class TestResponseProcessor(unittest.TestCase):
             'paused': True,
             'extension': '1222',
             'context': 'alice',
-            'state_interface': 'SIP/alice',
+            'state_interface': 'PJSIP/alice',
             'tenant_uuid': FAKE_TENANT,
         }
         resp = new_response(200, v)
@@ -258,7 +258,7 @@ class TestResponseProcessor(unittest.TestCase):
             'paused': False,
             'extension': '1222',
             'context': 'alice',
-            'state_interface': 'SIP/alice',
+            'state_interface': 'PJSIP/alice',
             'tenant_uuid': FAKE_TENANT,
         }
         resp = new_response(200, [v])
