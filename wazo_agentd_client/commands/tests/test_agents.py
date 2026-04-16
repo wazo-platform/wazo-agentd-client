@@ -1,4 +1,4 @@
-# Copyright 2015-2025 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2015-2026 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -179,10 +179,24 @@ class TestRequestFactory(unittest.TestCase):
 
         self._assert_get_request(req, expected_url)
 
+    def test_agent_queue_login(self):
+        expected_url = f'{self.base_url}/2/queues/1/login'
+
+        req = self.req_factory.agent_queue_login(self.agent_id, 1)
+
+        self._assert_put_request(req, expected_url)
+
     def test_user_agent_login_to_queue(self):
         expected_url = f'{self.base_url}/users/me/agents/queues/1/login'
 
         req = self.req_factory.user_agent_login_to_queue(1)
+
+        self._assert_put_request(req, expected_url)
+
+    def test_agent_queue_logoff(self):
+        expected_url = f'{self.base_url}/2/queues/1/logoff'
+
+        req = self.req_factory.agent_queue_logoff(self.agent_id, 1)
 
         self._assert_put_request(req, expected_url)
 

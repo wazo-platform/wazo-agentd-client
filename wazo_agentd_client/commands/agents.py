@@ -1,4 +1,4 @@
-# Copyright 2015-2025 The Wazo Authors  (see the AUTHORS file)
+# Copyright 2015-2026 The Wazo Authors  (see the AUTHORS file)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import json
@@ -121,20 +121,30 @@ class AgentsCommand(RESTCommand):
         req = self._req_factory.status_all(tenant_uuid=tenant_uuid, recurse=recurse)
         return self._execute(req, self._resp_processor.status_all)
 
-    def user_agent_login_to_queue(self, queue_id, tenant_uuid=None):
+    def user_agent_login_to_queue(self, queue_id, agent_id=None, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
-        user_req_factory = _RequestFactory(self._client.url())
-        req = user_req_factory.user_agent_login_to_queue(
-            queue_id, tenant_uuid=tenant_uuid
-        )
+        if agent_id:
+            req = self._req_factory.agent_queue_login(
+                agent_id, queue_id, tenant_uuid=tenant_uuid
+            )
+        else:
+            user_req_factory = _RequestFactory(self._client.url())
+            req = user_req_factory.user_agent_login_to_queue(
+                queue_id, tenant_uuid=tenant_uuid
+            )
         return self._execute(req, self._resp_processor.generic)
 
-    def user_agent_logoff_from_queue(self, queue_id, tenant_uuid=None):
+    def user_agent_logoff_from_queue(self, queue_id, agent_id=None, tenant_uuid=None):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
-        user_req_factory = _RequestFactory(self._client.url())
-        req = user_req_factory.user_agent_logoff_from_queue(
-            queue_id, tenant_uuid=tenant_uuid
-        )
+        if agent_id:
+            req = self._req_factory.agent_queue_logoff(
+                agent_id, queue_id, tenant_uuid=tenant_uuid
+            )
+        else:
+            user_req_factory = _RequestFactory(self._client.url())
+            req = user_req_factory.user_agent_logoff_from_queue(
+                queue_id, tenant_uuid=tenant_uuid
+            )
         return self._execute(req, self._resp_processor.generic)
 
     def _execute(self, req, processor_fun, timeout=None):
@@ -329,8 +339,22 @@ class _RequestFactory:
             url, additional_headers=additional_headers, params=params
         )
 
+    def agent_queue_login(self, agent_id, queue_id, tenant_uuid=None):
+        url = f'{self._base_url}/{agent_id}/queues/{queue_id}/login'
+        additional_headers = {}
+        if tenant_uuid:
+            additional_headers['Wazo-Tenant'] = tenant_uuid
+        return self._new_put_request(url, additional_headers=additional_headers)
+
     def user_agent_login_to_queue(self, queue_id, tenant_uuid=None):
         url = f'{self._base_url}/users/me/agents/queues/{queue_id}/login'
+        additional_headers = {}
+        if tenant_uuid:
+            additional_headers['Wazo-Tenant'] = tenant_uuid
+        return self._new_put_request(url, additional_headers=additional_headers)
+
+    def agent_queue_logoff(self, agent_id, queue_id, tenant_uuid=None):
+        url = f'{self._base_url}/{agent_id}/queues/{queue_id}/logoff'
         additional_headers = {}
         if tenant_uuid:
             additional_headers['Wazo-Tenant'] = tenant_uuid
