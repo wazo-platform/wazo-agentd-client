@@ -22,6 +22,7 @@ c.agents.logoff_agent_by_number(agent_number='1234')
 
 c.agents.logoff_all_agents()
 c.agents.relog_all_agents()
+c.agents.relog_all_agents(all_queues=True)  # also restore membership for queues the agent was logged off from
 
 c.agents.pause_agent_by_number(agent_number='1234')
 c.agents.unpause_agent_by_number(agent_number='1234')

@@ -76,9 +76,13 @@ class AgentsCommand(RESTCommand):
         req = self._req_factory.logoff_all(tenant_uuid=tenant_uuid, recurse=recurse)
         self._execute(req, self._resp_processor.generic)
 
-    def relog_all_agents(self, tenant_uuid=None, recurse=False, timeout=None):
+    def relog_all_agents(
+        self, tenant_uuid=None, recurse=False, all_queues=False, timeout=None
+    ):
         tenant_uuid = tenant_uuid or self._client.tenant_uuid
-        req = self._req_factory.relog_all(tenant_uuid=tenant_uuid, recurse=recurse)
+        req = self._req_factory.relog_all(
+            tenant_uuid=tenant_uuid, recurse=recurse, all_queues=all_queues
+        )
         self._execute(req, self._resp_processor.generic, timeout=timeout)
 
     def pause_agent_by_number(self, agent_number, tenant_uuid=None):
@@ -319,7 +323,7 @@ class _RequestFactory:
             params['recurse'] = True
         return self._new_post_request(url)
 
-    def relog_all(self, tenant_uuid=None, recurse=False):
+    def relog_all(self, tenant_uuid=None, recurse=False, all_queues=False):
         url = f'{self._base_url}/relog'
         additional_headers = {}
         params = {}
@@ -327,6 +331,8 @@ class _RequestFactory:
             additional_headers['Wazo-Tenant'] = tenant_uuid
         if recurse:
             params['recurse'] = True
+        if all_queues:
+            params['all_queues'] = True
         return self._new_post_request(
             url, additional_headers=additional_headers, params=params
         )
