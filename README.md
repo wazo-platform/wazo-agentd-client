@@ -35,9 +35,8 @@ c.agents.get_user_agent_status()
 c.agents.user_agent_login_to_queue(queue_id=13)
 c.agents.user_agent_logoff_from_queue(queue_id=13)
 
-# Admin: per-queue login/logoff by agent ID
-c.agents.user_agent_login_to_queue(queue_id=13, agent_id=12)
-c.agents.user_agent_logoff_from_queue(queue_id=13, agent_id=12)
+c.agents.agent_login_to_queue(queue_id=13, agent_id=12)
+c.agents.agent_logoff_from_queue(queue_id=13, agent_id=12)
 
 status = c.agents.get_agent_status(agent_id=12)
 status = c.agents.get_agent_status_by_number(agent_number='1234')

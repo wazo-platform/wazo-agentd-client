@@ -179,10 +179,10 @@ class TestRequestFactory(unittest.TestCase):
 
         self._assert_get_request(req, expected_url)
 
-    def test_agent_queue_login(self):
+    def test_agent_login_to_queue(self):
         expected_url = f'{self.base_url}/2/queues/1/login'
 
-        req = self.req_factory.agent_queue_login(self.agent_id, 1)
+        req = self.req_factory.agent_login_to_queue(self.agent_id, 1)
 
         self._assert_put_request(req, expected_url)
 
@@ -193,10 +193,10 @@ class TestRequestFactory(unittest.TestCase):
 
         self._assert_put_request(req, expected_url)
 
-    def test_agent_queue_logoff(self):
+    def test_agent_logoff_from_queue(self):
         expected_url = f'{self.base_url}/2/queues/1/logoff'
 
-        req = self.req_factory.agent_queue_logoff(self.agent_id, 1)
+        req = self.req_factory.agent_logoff_from_queue(self.agent_id, 1)
 
         self._assert_put_request(req, expected_url)
 
