@@ -172,6 +172,13 @@ class TestRequestFactory(unittest.TestCase):
 
         self._assert_post_request(req, expected_url)
 
+    def test_relog_all_with_all_queues(self):
+        expected_url = f'{self.base_url}/relog?all_queues=True'
+
+        req = self.req_factory.relog_all(all_queues=True)
+
+        self._assert_post_request(req, expected_url)
+
     def test_status_all(self):
         expected_url = self.base_url
 
